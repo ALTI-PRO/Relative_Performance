@@ -9,13 +9,17 @@ from matplotlib import style
 start_date = datetime.datetime(2010, 1, 2) #YYY-MM-DD
 end_date = datetime.datetime(2020, 5, 7)
 
-google = pdat.DataReader("GOOG", 'yahoo', start_date, end_date)
+google = pdat.DataReader("GOOG", 'yahoo', start_date, end_date)        #Defining symbols and Start, Stop date
 nasdaq = pdat.DataReader("^IXIC", 'yahoo', start_date, end_date)
 
 g_cc = [google.iloc[x][5] for x in range (len(google))]       #List of closing Prices
 n_cc = [nasdaq.iloc[x][5] for x in range (len(nasdaq))]
-g_c= google.drop(google.columns[0:5], axis=1)
+g_c= google.drop(google.columns[0:5], axis=1)                 #Keeping only the adjusted close price and removing other OHLC data
 n_c= nasdaq.drop(nasdaq.columns[0:5], axis=1)
+
+
+r_p = [g_cc[x]/n_cc[x] for x in range (len(g_cc))] #Relative performance calculation
+rolling_mean = pd.DataFrame(r_p).rolling(50).mean() # Converting tha list to pandas dataframe and calculating 50 period SMA of Relative Performance
 
 #Plotting Google and NASDAQ Chart
 style.use('dark_background')
@@ -34,8 +38,6 @@ plt.title(f"Google and Prices from {start_date} until {end_date}")
 plt.legend()
 plt.show()
 
-r_p = [g_cc[x]/n_cc[x] for x in range (len(g_cc))] #Relative performance calculation
-rolling_mean = pd.DataFrame(r_p).rolling(50).mean() # Calculating 50 period SMA of Relative Performance
 
 #Plotting Relative Performance with 50 SMA of the relative performance
 style.use('dark_background')
