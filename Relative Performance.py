@@ -37,14 +37,11 @@ plt.show()
 r_p = [g_cc[x]/n_cc[x] for x in range (len(g_cc))] #Relative performance calculation
 rolling_mean = pd.DataFrame(r_p).rolling(50).mean() # Calculating 50 period SMA of Relative Performance
 
+#Plotting Relative Performance with 50 SMA of the relative performance
 style.use('dark_background')
 plt.figure(figsize=(40,20))
-
 ax1= sb.lineplot(x=g_c.index, y= r_p, label='Google')
 ax2= sb.lineplot(x=n_c.index, y=rolling_mean[0], label = 'Moving Average 50')
-
 plt.title("Google and NASDAQ Relative Performance")
-
 plt.legend()
-
 plt.show()
